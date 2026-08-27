@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quadro de Tarefas Acadêmicas</title>
+  <style>
+    :root {
+      --bg-principal: #121214;
+      --bg-superficie: #1e1e24;
+      --bg-cartao: #2a2a32;
+      --bg-input: #18181b;
+      
+      --texto-principal: #e1e1e6;
+      --texto-secundario: #a8a8b3;
+      --texto-destaque: #ffffff;
+      
+      --cor-borda: #323238;
+      --cor-primaria: #00e676;
+      --cor-destaque-topico: #8257e5;
+
+      --cor-afazer: #ff5555;
+      --cor-andamento: #ff9900;
+      --cor-revisao: #f1fa8c;
+      --cor-concluida: #50fa7b;
+
+      --fonte-padrao: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-principal);
+      color: var(--texto-principal);
+      font-family: var(--fonte-padrao);
+      line-height: 1.6;
+      padding: 1.5rem;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    header {
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--cor-borda);
+    }
+
+    header h1 {
+      font-size: clamp(1.5rem, 1rem + 2vw, 2.5rem);
+      color: var(--texto-destaque);
+      letter-spacing: -0.02em;
+    }
+
+    section[aria-labelledby="buscaFiltros"] {
+      background-color: var(--bg-superficie);
+      padding: 1.25rem;
+      border-radius: 8px;
+      border: 1px solid var(--cor-borda);
+    }
+
+    h2 {
+      font-size: 1.1rem;
+      color: var(--cor-destaque-topico);
+      margin-bottom: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    form > div {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    label {
+      font-size: 0.9rem;
+      color: var(--texto-secundario);
+    }
+
+    input[type="search"] {
+      background-color: var(--bg-input);
+      border: 1px solid var(--cor-borda);
+      color: var(--texto-principal);
+      padding: 0.75rem 1rem;
+      border-radius: 6px;
+      font-size: 1rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    input[type="search"]:focus {
+      border-color: var(--cor-primaria);
+    }
+
+    fieldset {
+      border: 1px solid var(--cor-borda);
+      border-radius: 6px;
+      padding: 0.75rem 1rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    legend {
+      color: var(--texto-secundario);
+      font-size: 0.85rem;
+      padding: 0 0.4rem;
+    }
+
+    fieldset label {
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      color: var(--texto-principal);
+    }
+
+    section[aria-labelledby="quadroTarefas"] {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    /* GRID RESPONSIVO COM AUTO-FIT E LARGURA MÍNIMA DE 250PX */
+    .kanban-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1rem;
+      align-items: start;
+    }
+
+    .kanban-grid > section {
+      background-color: var(--bg-superficie);
+      border-radius: 8px;
+      padding: 1rem;
+      border: 1px solid var(--cor-borda);
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      min-width: 0;
+    }
+
+    h3 {
+      font-size: 1.1rem;
+      color: var(--texto-destaque);
+      padding-bottom: 0.5rem;
+    }
+
+    section[aria-labelledby="aFazer"] h3 {
+      border-bottom: 3px solid var(--cor-afazer);
+    }
+
+    section[aria-labelledby="emAndamento"] h3 {
+      border-bottom: 3px solid var(--cor-andamento);
+    }
+
+    section[aria-labelledby="emRevisao"] h3 {
+      border-bottom: 3px solid var(--cor-revisao);
+    }
+
+    section[aria-labelledby="tarefasConcluidas"] h3 {
+      border-bottom: 3px solid var(--cor-concluida);
+    }
+
+    ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+    }
+
+    article {
+      background-color: var(--bg-cartao);
+      border-radius: 6px;
+      padding: 1rem;
+      border: 1px solid var(--cor-borda);
+      box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      min-width: 0;
+    }
+
+    article h4 {
+      color: var(--texto-destaque);
+      font-size: 0.95rem;
+      font-weight: 600;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      min-width: 0;
+    }
+
+    dl {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 0.35rem 0.75rem;
+      font-size: 0.85rem;
+    }
+
+    dt {
+      color: var(--texto-secundario);
+      font-weight: 500;
+    }
+
+    dd {
+      color: var(--texto-principal);
+      word-break: break-word;
+    }
+
+    footer {
+      margin-top: auto;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--cor-borda);
+      color: var(--texto-secundario);
+      font-size: 0.85rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Quadro de Tarefas Acadêmicas</h1>
+  </header>
+
+  <main>
+    <section aria-labelledby="buscaFiltros">
+      <h2 id="buscaFiltros">Busca e filtros</h2>
+
+      <form>
+        <div>
+          <label for="buscaTitulo">Buscar por título da tarefa</label>
+          <input type="search" id="buscaTitulo" name="buscaTitulo">
+        </div>
+
+        <fieldset>
+          <legend>Filtrar por status</legend>
+
+          <input type="radio" id="filtroStatusTodos" name="filtroStatus" value="todos" checked>
+          <label for="filtroStatusTodos">Todos</label>
+
+          <input type="radio" id="filtroStatusAfazer" name="filtroStatus" value="aFazer">
+          <label for="filtroStatusAfazer">A fazer</label>
+
+          <input type="radio" id="filtroStatusAndamento" name="filtroStatus" value="emAndamento">
+          <label for="filtroStatusAndamento">Em andamento</label>
+
+          <input type="radio" id="filtroStatusRevisao" name="filtroStatus" value="emRevisao">
+          <label for="filtroStatusRevisao">Em revisão</label>
+
+          <input type="radio" id="filtroStatusConcluida" name="filtroStatus" value="concluida">
+          <label for="filtroStatusConcluida">Concluída</label>
+        </fieldset>
+
+        <fieldset>
+          <legend>Filtrar por prioridade</legend>
+
+          <input type="radio" id="filtroPrioridadeTodas" name="filtroPrioridade" value="todas" checked>
+          <label for="filtroPrioridadeTodas">Todas</label>
+
+          <input type="radio" id="filtroPrioridadeBaixa" name="filtroPrioridade" value="baixa">
+          <label for="filtroPrioridadeBaixa">Baixa</label>
+
+          <input type="radio" id="filtroPrioridadeMedia" name="filtroPrioridade" value="media">
+          <label for="filtroPrioridadeMedia">Média</label>
+
+          <input type="radio" id="filtroPrioridadeAlta" name="filtroPrioridade" value="alta">
+          <label for="filtroPrioridadeAlta">Alta</label>
+        </fieldset>
+      </form>
+    </section>
+
+    <section aria-labelledby="quadroTarefas">
+      <h2 id="quadroTarefas">Quadro de tarefas</h2>
+
+      <div class="kanban-grid">
+        <section aria-labelledby="aFazer">
+          <h3 id="aFazer">A fazer</h3>
+          <ul>
+            <li>
+              <article>
+                <h4>Modelar diagrama ER</h4>
+                <dl>
+                  <dt>Projeto:</dt>
+                  <dd>Sistema de Biblioteca</dd>
+
+                  <dt>Responsável:</dt>
+                  <dd>João</dd>
+
+                  <dt>Prazo:</dt>
+                  <dd><time datetime="2026-08-15">15/08/2026</time></dd>
+
+                  <dt>Prioridade:</dt>
+                  <dd>Alta</dd>
+                </dl>
+              </article>
+            </li>
+
+            <li>
+              <article>
+                <h4>Configurar ambiente Docker</h4>
+                <dl>
+                  <dt>Projeto:</dt>
+                  <dd>App de Monitoramento Climático</dd>
+
+                  <dt>Responsável:</dt>
+                  <dd>Maria</dd>
+
+                  <dt>Prazo:</dt>
+                  <dd><time datetime="2026-08-20">20/08/2026</time></dd>
+
+                  <dt>Prioridade:</dt>
+                  <dd>Média</dd>
+                </dl>
+              </article>
+            </li>
+          </ul>
+        </section>
+
+        <section aria-labelledby="emAndamento">
+          <h3 id="emAndamento">Em andamento</h3>
+          <ul>
+            <li>
+              <article>
+                <h4>Implementar autenticação de usuários</h4>
+                <dl>
+                  <dt>Projeto:</dt>
+                  <dd>Sistema de Biblioteca</dd>
+
+                  <dt>Responsável:</dt>
+                  <dd>Pedro</dd>
+
+                  <dt>Prazo:</dt>
+                  <dd><time datetime="2026-08-12">12/08/2026</time></dd>
+
+                  <dt>Prioridade:</dt>
+                  <dd>Alta</dd>
+                </dl>
+              </article>
+            </li>
+
+            <li>
+              <article>
+                <h4>Criar API de consulta climática</h4>
+                <dl>
+                  <dt>Projeto:</dt>
+                  <dd>App de Monitoramento Climático</dd>
+
+                  <dt>Responsável:</dt>
+                  <dd>Ana</dd>
+
+                  <dt>Prazo:</dt>
+                  <dd><time datetime="2026-08-18">18/08/2026</time></dd>
+
+                  <dt>Prioridade:</dt>
+                  <dd>Média</dd>
+                </dl>
+              </article>
+            </li>
+          </ul>
+        </section>
+
+        <section aria-labelledby="emRevisao">
+          <h3 id="emRevisao">Em revisão</h3>
+          <ul>
+            <li>   
+              <article>
+                <h4>Revisar consultas SQL otimizadas</h4>
+                <dl>
+                  <dt>Projeto:</dt>
+                  <dd>Sistema de Biblioteca</dd>
+
+                  <dt>Responsável:</dt>
+                  <dd>Carla</dd>
+
+                  <dt>Prazo:</dt>
+                  <dd><time datetime="2026-08-10">10/08/2026</time></dd>
+
+                  <dt>Prioridade:</dt>
+                  <dd>Baixa</dd>
+                </dl>
+              </article>
+            </li>
+
+            <li>
+              <article>
+                <h4>Testar simulação de topologia em estrela</h4>
+                <dl>
+                  <dt>Projeto:</dt>
+                  <dd>Simulador de Redes</dd>
+
+                  <dt>Responsável:</dt>
+                  <dd>Lucas</dd>
+
+                  <dt>Prazo:</dt>
+                  <dd><time datetime="2026-08-14">14/08/2026</time></dd>
+
+                  <dt>Prioridade:</dt>
+                  <dd>Alta</dd>
+                </dl>
+              </article>
+            </li>
+          </ul>
+        </section>
+
+        <section aria-labelledby="tarefasConcluidas">
+          <h3 id="tarefasConcluidas">Concluída</h3>
+          <ul>
+            <li>
+              <article>
+                <h4>Escrever documentação do módulo de empréstimos</h4>
+                <dl>
+                  <dt>Projeto:</dt>
+                  <dd>Sistema de Biblioteca</dd>
+
+                  <dt>Responsável:</dt>
+                  <dd>João</dd>
+
+                  <dt>Prazo:</dt>
+                  <dd><time datetime="2026-08-05">05/08/2026</time></dd>
+
+                  <dt>Prioridade:</dt>
+                  <dd>Baixa</dd>
+                </dl>
+              </article>
+            </li>
+
+            <li>
+              <article>
+                <h4>Configurar repositório Git do simulador</h4>
+                <dl>
+                  <dt>Projeto:</dt>
+                  <dd>Simulador de Redes</dd>
+
+                  <dt>Responsável:</dt>
+                  <dd>Maria</dd>
+
+                  <dt>Prazo:</dt>
+                  <dd><time datetime="2026-08-02">02/08/2026</time></dd>
+
+                  <dt>Prioridade:</dt>
+                  <dd>Média</dd>
+                </dl>
+              </article>
+            </li>
+          </ul>
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>Autor: Gabriel Messias Freire Garrido</p>
+    <p>Disciplina: Desenvolvimento Web / Desenvolvimento Front-End</p>
+  </footer>
+</body>
+</html>
