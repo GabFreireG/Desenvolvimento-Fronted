@@ -1,0 +1,271 @@
+:root {
+  --bg-principal: #121214;
+  --bg-superficie: #1e1e24;
+  --bg-cartao: #2a2a32;
+  --bg-input: #18181b;
+
+  --texto-principal: #e1e1e6;
+  --texto-secundario: #a8a8b3;
+  --texto-destaque: #ffffff;
+  
+  --cor-borda: #3c3c44;
+  --cor-foco: #8257e5;
+
+  --cor-status-afazer: #ff6b6b;
+  --cor-status-andamento: #ffb020;
+  --cor-status-revisao: #ebd047;
+  --cor-status-concluida: #34d399;
+
+  --espaco-sm: 0.5rem;
+  --espaco-md: 1rem;
+  --espaco-lg: 1.5rem;
+
+  --raio-canto: 0.5rem;
+
+  --fonte-padrao: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--bg-principal);
+  color: var(--texto-principal);
+  font-family: var(--fonte-padrao);
+  line-height: 1.5;
+  padding: var(--espaco-md);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaco-lg);
+}
+
+:focus-visible {
+  outline: 0.1875rem solid var(--cor-foco);
+  outline-offset: 0.125rem;
+}
+
+header {
+  padding-bottom: var(--espaco-md);
+  border-bottom: 0.0625rem solid var(--cor-borda);
+}
+
+header h1 {
+  font-size: clamp(1.5rem, 1.2rem + 1.5vw, 2.5rem);
+  color: var(--texto-destaque);
+}
+
+section[aria-labelledby="buscaFiltros"] {
+  background-color: var(--bg-superficie);
+  padding: var(--espaco-md);
+  border-radius: var(--raio-canto);
+  border: 0.0625rem solid var(--cor-borda);
+}
+
+h2 {
+  font-size: 1.125rem;
+  color: var(--texto-destaque);
+  margin-bottom: var(--espaco-md);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaco-md);
+}
+
+form > div {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaco-sm);
+}
+
+label {
+  font-size: 0.875rem;
+  color: var(--texto-secundario);
+}
+
+input[type="search"] {
+  background-color: var(--bg-input);
+  border: 0.0625rem solid var(--cor-borda);
+  color: var(--texto-principal);
+  padding: 0.75rem 1rem;
+  border-radius: var(--raio-canto);
+  font-size: 1rem;
+  min-height: 2.75rem;
+  width: 100%;
+}
+
+fieldset {
+  border: 0.0625rem solid var(--cor-borda);
+  border-radius: var(--raio-canto);
+  padding: var(--espaco-md);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--espaco-md);
+  align-items: center;
+}
+
+legend {
+  color: var(--texto-secundario);
+  font-size: 0.875rem;
+  padding: 0 0.375rem;
+}
+
+fieldset label {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--texto-principal);
+  font-size: 0.9375rem;
+  min-height: 2rem;
+  padding: 0.25rem 0.5rem;
+}
+
+input[type="radio"] {
+  width: 1.25rem;
+  height: 1.25rem;
+  accent-color: var(--cor-foco);
+  cursor: pointer;
+}
+
+section[aria-labelledby="quadroTarefas"] {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaco-md);
+}
+
+.kanban-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--espaco-lg);
+  width: 100%;
+}
+
+.kanban-grid > section {
+  background-color: var(--bg-superficie);
+  border-radius: var(--raio-canto);
+  padding: var(--espaco-md);
+  border: 0.0625rem solid var(--cor-borda);
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaco-md);
+  min-width: 0;
+}
+
+h3 {
+  font-size: 1.125rem;
+  color: var(--texto-destaque);
+  padding-bottom: var(--espaco-sm);
+}
+
+section[aria-labelledby="aFazer"] h3 {
+  border-bottom: 0.1875rem solid var(--cor-status-afazer);
+}
+
+section[aria-labelledby="emAndamento"] h3 {
+  border-bottom: 0.1875rem solid var(--cor-status-andamento);
+}
+
+section[aria-labelledby="emRevisao"] h3 {
+  border-bottom: 0.1875rem solid var(--cor-status-revisao);
+}
+
+section[aria-labelledby="tarefasConcluidas"] h3 {
+  border-bottom: 0.1875rem solid var(--cor-status-concluida);
+}
+
+ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaco-md);
+}
+
+article {
+  background-color: var(--bg-cartao);
+  border-radius: var(--raio-canto);
+  padding: var(--espaco-md);
+  border: 0.0625rem solid var(--cor-borda);
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaco-sm);
+  min-width: 0;
+}
+
+article h4 {
+  color: var(--texto-destaque);
+  font-size: 1rem;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+dl {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.25rem var(--espaco-md);
+  font-size: 0.875rem;
+}
+
+dt {
+  color: var(--texto-secundario);
+  font-weight: 500;
+}
+
+dd {
+  color: var(--texto-principal);
+  word-break: break-word;
+}
+
+dd time {
+  font-weight: 600;
+}
+
+footer {
+  margin-top: auto;
+  padding-top: var(--espaco-md);
+  border-top: 0.0625rem solid var(--cor-borda);
+  color: var(--texto-secundario);
+  font-size: 0.875rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+@media (min-width: 40rem) {
+  form {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: flex-end;
+  }
+
+  form > div {
+    flex: 1 1 100%;
+  }
+
+  fieldset {
+    flex: 1 1 calc(50% - var(--espaco-md));
+  }
+}
+
+@media (min-width: 64rem) {
+  form > div {
+    flex: 1 1 auto;
+  }
+
+  .kanban-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--espaco-md);
+    align-items: start;
+  }
+}
