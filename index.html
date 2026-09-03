@@ -3,248 +3,89 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Quadro de Tarefas Acadêmicas</title>
+  <title>Tarefas Acadêmicas</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <header>
-    <h1>Quadro de Tarefas Acadêmicas</h1>
+    <h1>
+      <!-- Raio idêntico ao modelo da 2ª imagem -->
+      <svg class="icone-raio-4pontas" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M13 2L3 14h7v8l10-12h-7z" />
+      </svg>
+      Tarefas Acadêmicas
+    </h1>
   </header>
 
   <main>
     <section aria-labelledby="buscaFiltros">
-      <h2 id="buscaFiltros">Busca e filtros</h2>
-
-      <form>
+      <h2 id="buscaFiltros">Buscar e Filtrar</h2>
+      <form id="formFiltros">
         <div>
-          <label for="buscaTitulo">Buscar por título da tarefa</label>
-          <input type="search" id="buscaTitulo" name="buscaTitulo">
+          <label for="buscaTitulo">Buscar por título</label>
+          <div class="campo-busca">
+            <input type="search" id="buscaTitulo" placeholder="Digite o título da tarefa..." />
+            <button type="submit" id="btnBuscar">Buscar</button>
+          </div>
         </div>
 
         <fieldset>
-          <legend>Filtrar por status</legend>
-
-          <input type="radio" id="filtroStatusTodos" name="filtroStatus" value="todos" checked>
-          <label for="filtroStatusTodos">Todos</label>
-
-          <input type="radio" id="filtroStatusAfazer" name="filtroStatus" value="aFazer">
-          <label for="filtroStatusAfazer">A fazer</label>
-
-          <input type="radio" id="filtroStatusAndamento" name="filtroStatus" value="emAndamento">
-          <label for="filtroStatusAndamento">Em andamento</label>
-
-          <input type="radio" id="filtroStatusRevisao" name="filtroStatus" value="emRevisao">
-          <label for="filtroStatusRevisao">Em revisão</label>
-
-          <input type="radio" id="filtroStatusConcluida" name="filtroStatus" value="concluida">
-          <label for="filtroStatusConcluida">Concluída</label>
+          <legend>Filtrar por Status</legend>
+          <label><input type="radio" name="filtroStatus" value="todos" checked /> Todos</label>
+          <label><input type="radio" name="filtroStatus" value="a_fazer" /> A Fazer</label>
+          <label><input type="radio" name="filtroStatus" value="em_andamento" /> Em Andamento</label>
+          <label><input type="radio" name="filtroStatus" value="em_revisao" /> Em Revisão</label>
+          <label><input type="radio" name="filtroStatus" value="concluida" /> Concluída</label>
         </fieldset>
 
         <fieldset>
-          <legend>Filtrar por prioridade</legend>
-
-          <input type="radio" id="filtroPrioridadeTodas" name="filtroPrioridade" value="todas" checked>
-          <label for="filtroPrioridadeTodas">Todas</label>
-
-          <input type="radio" id="filtroPrioridadeBaixa" name="filtroPrioridade" value="baixa">
-          <label for="filtroPrioridadeBaixa">Baixa</label>
-
-          <input type="radio" id="filtroPrioridadeMedia" name="filtroPrioridade" value="media">
-          <label for="filtroPrioridadeMedia">Média</label>
-
-          <input type="radio" id="filtroPrioridadeAlta" name="filtroPrioridade" value="alta">
-          <label for="filtroPrioridadeAlta">Alta</label>
+          <legend>Filtrar por Prioridade</legend>
+          <label><input type="radio" name="filtroPrioridade" value="todas" checked /> Todas</label>
+          <label><input type="radio" name="filtroPrioridade" value="baixa" /> Baixa</label>
+          <label><input type="radio" name="filtroPrioridade" value="media" /> Média</label>
+          <label><input type="radio" name="filtroPrioridade" value="alta" /> Alta</label>
         </fieldset>
+
+        <div class="acoes-filtros">
+          <button type="button" id="btnAplicarFiltros">Aplicar Filtros</button>
+        </div>
       </form>
     </section>
 
+    <div id="regiaoStatus" class="sr-only" aria-live="polite"></div>
+
     <section aria-labelledby="quadroTarefas">
-      <h2 id="quadroTarefas">Quadro de tarefas</h2>
+      <h2 id="quadroTarefas">Quadro de Tarefas</h2>
+      <div id="containerEstado"></div>
 
-      <section aria-labelledby="aFazer">
-        <h3 id="aFazer">A fazer</h3>
-        <ul>
+      <div class="kanban-grid">
+        <section aria-labelledby="aFazer">
+          <h3 id="aFazer">A Fazer</h3>
+          <ul id="listaAFazer"></ul>
+        </section>
 
-          <li>
-            <article>
-              <h4>Modelar diagrama ER</h4>
-              <dl>
-                <dt>Projeto:</dt>
-                <dd>Sistema de Biblioteca</dd>
+        <section aria-labelledby="emAndamento">
+          <h3 id="emAndamento">Em Andamento</h3>
+          <ul id="listaEmAndamento"></ul>
+        </section>
 
-                <dt>Responsável:</dt>
-                <dd>João</dd>
+        <section aria-labelledby="emRevisao">
+          <h3 id="emRevisao">Em Revisão</h3>
+          <ul id="listaEmRevisao"></ul>
+        </section>
 
-                <dt>Prazo:</dt>
-                <dd><time datetime="2026-08-15">15/08/2026</time></dd>
-
-                <dt>Prioridade:</dt>
-                <dd>Alta</dd>
-              </dl>
-            </article>
-          </li>
-
-          <li>
-            <article>
-              <h4>Configurar ambiente Docker</h4>
-              <dl>
-                <dt>Projeto:</dt>
-                <dd>App de Monitoramento Climático</dd>
-
-                <dt>Responsável:</dt>
-                <dd>Maria</dd>
-
-                <dt>Prazo:</dt>
-                <dd><time datetime="2026-08-20">20/08/2026</time></dd>
-
-                <dt>Prioridade:</dt>
-                <dd>Média</dd>
-              </dl>
-            </article>
-          </li>
-
-        </ul>
-      </section>
-
-      <section aria-labelledby="emAndamento">
-        <h3 id="emAndamento">Em andamento</h3>
-        <ul>
-
-          <li>
-            <article>
-              <h4>Implementar autenticação de usuários</h4>
-              <dl>
-                <dt>Projeto:</dt>
-                <dd>Sistema de Biblioteca</dd>
-
-                <dt>Responsável:</dt>
-                <dd>Pedro</dd>
-
-                <dt>Prazo:</dt>
-                <dd><time datetime="2026-08-12">12/08/2026</time></dd>
-
-                <dt>Prioridade:</dt>
-                <dd>Alta</dd>
-              </dl>
-            </article>
-          </li>
-
-          <li>
-            <article>
-              <h4>Criar API de consulta climática</h4>
-              <dl>
-                <dt>Projeto:</dt>
-                <dd>App de Monitoramento Climático</dd>
-
-                <dt>Responsável:</dt>
-                <dd>Ana</dd>
-
-                <dt>Prazo:</dt>
-                <dd><time datetime="2026-08-18">18/08/2026</time></dd>
-
-                <dt>Prioridade:</dt>
-                <dd>Média</dd>
-              </dl>
-            </article>
-          </li>
-
-        </ul>
-      </section>
-
-      <section aria-labelledby="emRevisao">
-        <h3 id="emRevisao">Em revisão</h3>
-        <ul>
-
-          <li>   
-            <article>
-              <h4>Revisar consultas SQL otimizadas</h4>
-              <dl>
-                <dt>Projeto:</dt>
-                <dd>Sistema de Biblioteca</dd>
-
-                <dt>Responsável:</dt>
-                <dd>Carla</dd>
-
-                <dt>Prazo:</dt>
-                <dd><time datetime="2026-08-10">10/08/2026</time></dd>
-
-                <dt>Prioridade:</dt>
-                <dd>Baixa</dd>
-              </dl>
-            </article>
-          </li>
-
-          <li>
-            <article>
-              <h4>Testar simulação de topologia em estrela</h4>
-              <dl>
-                <dt>Projeto:</dt>
-                <dd>Simulador de Redes</dd>
-
-                <dt>Responsável:</dt>
-                <dd>Lucas</dd>
-
-                <dt>Prazo:</dt>
-                <dd><time datetime="2026-08-14">14/08/2026</time></dd>
-
-                <dt>Prioridade:</dt>
-                <dd>Alta</dd>
-              </dl>
-            </article>
-          </li>
-
-        </ul>
-      </section>
-
-      <section aria-labelledby="tarefasConcluidas">
-        <h3 id="tarefasConcluidas">Concluída</h3>
-        <ul>
-          
-          <li>
-            <article>
-              <h4>Escrever documentação do módulo de empréstimos</h4>
-              <dl>
-                <dt>Projeto:</dt>
-                <dd>Sistema de Biblioteca</dd>
-
-                <dt>Responsável:</dt>
-                <dd>João</dd>
-
-                <dt>Prazo:</dt>
-                <dd><time datetime="2026-08-05">05/08/2026</time></dd>
-
-                <dt>Prioridade:</dt>
-                <dd>Baixa</dd>
-              </dl>
-            </article>
-          </li>
-
-          <li>
-            <article>
-              <h4>Configurar repositório Git do simulador</h4>
-              <dl>
-                <dt>Projeto:</dt>
-                <dd>Simulador de Redes</dd>
-
-                <dt>Responsável:</dt>
-                <dd>Maria</dd>
-
-                <dt>Prazo:</dt>
-                <dd><time datetime="2026-08-02">02/08/2026</time></dd>
-
-                <dt>Prioridade:</dt>
-                <dd>Média</dd>
-              </dl>
-            </article>
-          </li>
-
-        </ul>
-      </section>
+        <section aria-labelledby="tarefasConcluidas">
+          <h3 id="tarefasConcluidas">Concluídas</h3>
+          <ul id="listaConcluidas"></ul>
+        </section>
+      </div>
     </section>
   </main>
 
   <footer>
-    <p>Autor: Gabriel Messias Freire Garrido</p>
-    <p>Disciplina: Desenvolvimento Web / Desenvolvimento Front-End</p>
+    <p>&copy; Tarefas Acadêmicas - Organização e Produtividade</p>
   </footer>
+
+  <script type="module" src="js/app.js"></script>
 </body>
 </html>

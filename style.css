@@ -4,12 +4,17 @@
   --bg-cartao: #2a2a32;
   --bg-input: #18181b;
 
+  --bg-botao: #2b1f4d;
+  --bg-botao-hover: #3b2a6b;
+  --bg-botao-active: #180e30;
+
   --texto-principal: #e1e1e6;
   --texto-secundario: #a8a8b3;
   --texto-destaque: #ffffff;
   
   --cor-borda: #3c3c44;
   --cor-foco: #8257e5;
+  --cor-foco-hover: #996dff;
 
   --cor-status-afazer: #ff6b6b;
   --cor-status-andamento: #ffb020;
@@ -19,6 +24,7 @@
   --espaco-sm: 0.5rem;
   --espaco-md: 1rem;
   --espaco-lg: 1.5rem;
+  --espaco-xl: 2.5rem;
 
   --raio-canto: 0.5rem;
 
@@ -29,6 +35,17 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
 }
 
 body {
@@ -56,6 +73,18 @@ header {
 header h1 {
   font-size: clamp(1.5rem, 1.2rem + 1.5vw, 2.5rem);
   color: var(--texto-destaque);
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+}
+
+/* --- ÍCONE DE RAIO DE 4 PONTAS NO TÍTULO --- */
+.icone-raio-4pontas {
+  width: 1.875rem;
+  height: 1.875rem;
+  fill: #a855f7;
+  filter: drop-shadow(0 0 6px rgba(168, 85, 247, 0.6));
+  flex-shrink: 0;
 }
 
 section[aria-labelledby="buscaFiltros"] {
@@ -68,9 +97,9 @@ section[aria-labelledby="buscaFiltros"] {
 h2 {
   font-size: 1.125rem;
   color: var(--texto-destaque);
-  margin-bottom: var(--espaco-md);
   text-transform: uppercase;
   letter-spacing: 0.05em;
+  margin-bottom: var(--espaco-md);
 }
 
 form {
@@ -83,11 +112,18 @@ form > div {
   display: flex;
   flex-direction: column;
   gap: var(--espaco-sm);
+  width: 100%;
 }
 
 label {
   font-size: 0.875rem;
   color: var(--texto-secundario);
+}
+
+.campo-busca {
+  display: flex;
+  gap: var(--espaco-sm);
+  width: 100%;
 }
 
 input[type="search"] {
@@ -98,7 +134,82 @@ input[type="search"] {
   border-radius: var(--raio-canto);
   font-size: 1rem;
   min-height: 2.75rem;
+  flex: 1;
+}
+
+/* --- BOTÕES COM EFEITO ELÉTRICO --- */
+button {
+  position: relative;
+  overflow: hidden;
+  background-color: var(--bg-botao);
+  color: var(--texto-principal);
+  border: 0.0625rem solid var(--cor-borda);
+  padding: 0.75rem 1.75rem;
+  border-radius: var(--raio-canto);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s, border-color 0.2s, box-shadow 0.2s;
+  min-height: 2.75rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+}
+
+button:hover {
+  background-color: var(--bg-botao-hover);
+  color: var(--texto-destaque);
+  border-color: #a855f7;
+  box-shadow: 0 0 8px rgba(168, 85, 247, 0.3);
+}
+
+button:active {
+  background-color: var(--bg-botao-active);
+  transform: scale(0.98);
+}
+
+/* Pulso de brilho roxo sutil no clique */
+button.eletrico-ativo {
+  animation: pulsoEletrico 0.25s ease-out;
+}
+
+@keyframes pulsoEletrico {
+  0% {
+    box-shadow: 0 0 0px #a855f7, inset 0 0 0px #a855f7;
+    border-color: #a855f7;
+  }
+  50% {
+    box-shadow: 0 0 12px rgba(168, 85, 247, 0.6), inset 0 0 8px rgba(168, 85, 247, 0.4);
+    border-color: #c084fc;
+  }
+  100% {
+    box-shadow: 0 0 0px transparent, inset 0 0 0px transparent;
+  }
+}
+
+/* Canvas da animação contida dentro do botão */
+.canvas-eletrico {
+  position: absolute;
+  pointer-events: none;
+  z-index: 2;
+  border-radius: var(--raio-canto);
+}
+
+.acoes-filtros {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 0.5rem;
+}
+
+#btnAplicarFiltros {
   width: 100%;
+}
+
+@media (min-width: 48rem) {
+  #btnAplicarFiltros {
+    width: auto;
+  }
 }
 
 fieldset {
@@ -109,6 +220,7 @@ fieldset {
   flex-wrap: wrap;
   gap: var(--espaco-md);
   align-items: center;
+  width: 100%;
 }
 
 legend {
@@ -138,7 +250,11 @@ input[type="radio"] {
 section[aria-labelledby="quadroTarefas"] {
   display: flex;
   flex-direction: column;
-  gap: var(--espaco-md);
+}
+
+section[aria-labelledby="quadroTarefas"] > h2 {
+  margin-top: var(--espaco-xl);
+  margin-bottom: var(--espaco-sm);
 }
 
 .kanban-grid {
@@ -197,6 +313,7 @@ article {
   flex-direction: column;
   gap: var(--espaco-sm);
   min-width: 0;
+  flex: 1 1 auto;
 }
 
 article h4 {
@@ -231,6 +348,15 @@ dd time {
   font-weight: 600;
 }
 
+.estado-feedback {
+  grid-column: 1 / -1;
+  padding: var(--espaco-lg);
+  background-color: var(--bg-superficie);
+  border: 0.0625rem solid var(--cor-borda);
+  border-radius: var(--raio-canto);
+  text-align: center;
+}
+
 footer {
   margin-top: auto;
   padding-top: var(--espaco-md);
@@ -242,27 +368,7 @@ footer {
   gap: 0.25rem;
 }
 
-@media (min-width: 40rem) {
-  form {
-    flex-direction: row;
-    flex-wrap: wrap;
-    align-items: flex-end;
-  }
-
-  form > div {
-    flex: 1 1 100%;
-  }
-
-  fieldset {
-    flex: 1 1 calc(50% - var(--espaco-md));
-  }
-}
-
 @media (min-width: 64rem) {
-  form > div {
-    flex: 1 1 auto;
-  }
-
   .kanban-grid {
     grid-template-columns: repeat(4, 1fr);
     gap: var(--espaco-md);

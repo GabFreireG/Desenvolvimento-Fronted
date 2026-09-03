@@ -1,0 +1,76 @@
+{
+  "tarefas": [
+    {
+      "id": 1,
+      "titulo": "Modelar diagrama ER",
+      "projeto": "Sistema de Biblioteca",
+      "responsavel": "João",
+      "prazo": "2026-08-15",
+      "prioridade": "alta",
+      "status": "aFazer"
+    },
+    {
+      "id": 2,
+      "titulo": "Configurar ambiente Docker",
+      "projeto": "App de Monitoramento Climático",
+      "responsavel": "Maria",
+      "prazo": "2026-08-20",
+      "prioridade": "media",
+      "status": "aFazer"
+    },
+    {
+      "id": 3,
+      "titulo": "Implementar autenticação de usuários",
+      "projeto": "Sistema de Biblioteca",
+      "responsavel": "Pedro",
+      "prazo": "2026-08-12",
+      "prioridade": "alta",
+      "status": "emAndamento"
+    },
+    {
+      "id": 4,
+      "titulo": "Criar API de consulta climática",
+      "projeto": "App de Monitoramento Climático",
+      "responsavel": "Ana",
+      "prazo": "2026-08-18",
+      "prioridade": "media",
+      "status": "emAndamento"
+    },
+    {
+      "id": 5,
+      "titulo": "Revisar consultas SQL otimizadas",
+      "projeto": "Sistema de Biblioteca",
+      "responsavel": "Carla",
+      "prazo": "2026-08-10",
+      "prioridade": "baixa",
+      "status": "emRevisao"
+    },
+    {
+      "id": 6,
+      "titulo": "Testar simulação de topologia em estrela",
+      "projeto": "Simulador de Redes Neurais Avançado",
+      "responsavel": "Lucas",
+      "prazo": "2026-08-14",
+      "prioridade": "alta",
+      "status": "emRevisao"
+    },
+    {
+      "id": 7,
+      "titulo": "Escrever documentação do módulo de empréstimos",
+      "projeto": "Sistema de Biblioteca",
+      "responsavel": "João",
+      "prazo": "2026-08-05",
+      "prioridade": "baixa",
+      "status": "concluida"
+    },
+    {
+      "id": 8,
+      "titulo": "Configurar repositório Git do simulador",
+      "projeto": "Simulador de Redes Neurais Avançado",
+      "responsavel": "Maria",
+      "prazo": "2026-08-02",
+      "prioridade": "media",
+      "status": "concluida"
+    }
+  ]
+}
