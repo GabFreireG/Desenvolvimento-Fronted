@@ -4,17 +4,17 @@
   --bg-cartao: #2a2a32;
   --bg-input: #18181b;
 
-  --bg-botao: #2b1f4d;
-  --bg-botao-hover: #3b2a6b;
-  --bg-botao-active: #180e30;
+  --bg-botao: #27272a;
+  --bg-botao-hover: #3f3f46;
+  --bg-botao-active: #18181b;
 
   --texto-principal: #e1e1e6;
   --texto-secundario: #a8a8b3;
   --texto-destaque: #ffffff;
   
   --cor-borda: #3c3c44;
-  --cor-foco: #8257e5;
-  --cor-foco-hover: #996dff;
+  --cor-foco: #e4e4e7;
+  --cor-foco-hover: #ffffff;
 
   --cor-status-afazer: #ff6b6b;
   --cor-status-andamento: #ffb020;
@@ -78,12 +78,11 @@ header h1 {
   gap: 0.625rem;
 }
 
-/* --- ÍCONE DE RAIO DE 4 PONTAS NO TÍTULO --- */
 .icone-raio-4pontas {
   width: 1.875rem;
   height: 1.875rem;
-  fill: #a855f7;
-  filter: drop-shadow(0 0 6px rgba(168, 85, 247, 0.6));
+  fill: #ffffff;
+  filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.6));
   flex-shrink: 0;
 }
 
@@ -137,7 +136,6 @@ input[type="search"] {
   flex: 1;
 }
 
-/* --- BOTÕES COM EFEITO ELÉTRICO --- */
 button {
   position: relative;
   overflow: hidden;
@@ -160,8 +158,8 @@ button {
 button:hover {
   background-color: var(--bg-botao-hover);
   color: var(--texto-destaque);
-  border-color: #a855f7;
-  box-shadow: 0 0 8px rgba(168, 85, 247, 0.3);
+  border-color: #e4e4e7;
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
 }
 
 button:active {
@@ -169,26 +167,24 @@ button:active {
   transform: scale(0.98);
 }
 
-/* Pulso de brilho roxo sutil no clique */
 button.eletrico-ativo {
   animation: pulsoEletrico 0.25s ease-out;
 }
 
 @keyframes pulsoEletrico {
   0% {
-    box-shadow: 0 0 0px #a855f7, inset 0 0 0px #a855f7;
-    border-color: #a855f7;
+    box-shadow: 0 0 0px #ffffff, inset 0 0 0px #ffffff;
+    border-color: #ffffff;
   }
   50% {
-    box-shadow: 0 0 12px rgba(168, 85, 247, 0.6), inset 0 0 8px rgba(168, 85, 247, 0.4);
-    border-color: #c084fc;
+    box-shadow: 0 0 12px rgba(255, 255, 255, 0.6), inset 0 0 8px rgba(255, 255, 255, 0.4);
+    border-color: #e4e4e7;
   }
   100% {
     box-shadow: 0 0 0px transparent, inset 0 0 0px transparent;
   }
 }
 
-/* Canvas da animação contida dentro do botão */
 .canvas-eletrico {
   position: absolute;
   pointer-events: none;
@@ -349,12 +345,18 @@ dd time {
 }
 
 .estado-feedback {
-  grid-column: 1 / -1;
-  padding: var(--espaco-lg);
+  padding: var(--espaco-md);
+  margin-bottom: var(--espaco-md);
   background-color: var(--bg-superficie);
   border: 0.0625rem solid var(--cor-borda);
   border-radius: var(--raio-canto);
   text-align: center;
+  color: var(--texto-principal);
+}
+
+.estado-feedback.erro {
+  border-color: var(--cor-status-afazer);
+  color: #f87171;
 }
 
 footer {

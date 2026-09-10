@@ -9,7 +9,6 @@
 <body>
   <header>
     <h1>
-      <!-- Raio idêntico ao modelo da 2ª imagem -->
       <svg class="icone-raio-4pontas" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
         <path d="M13 2L3 14h7v8l10-12h-7z" />
       </svg>
@@ -32,9 +31,9 @@
         <fieldset>
           <legend>Filtrar por Status</legend>
           <label><input type="radio" name="filtroStatus" value="todos" checked /> Todos</label>
-          <label><input type="radio" name="filtroStatus" value="a_fazer" /> A Fazer</label>
-          <label><input type="radio" name="filtroStatus" value="em_andamento" /> Em Andamento</label>
-          <label><input type="radio" name="filtroStatus" value="em_revisao" /> Em Revisão</label>
+          <label><input type="radio" name="filtroStatus" value="aFazer" /> A Fazer</label>
+          <label><input type="radio" name="filtroStatus" value="emAndamento" /> Em Andamento</label>
+          <label><input type="radio" name="filtroStatus" value="emRevisao" /> Em Revisão</label>
           <label><input type="radio" name="filtroStatus" value="concluida" /> Concluída</label>
         </fieldset>
 
@@ -52,7 +51,7 @@
       </form>
     </section>
 
-    <div id="regiaoStatus" class="sr-only" aria-live="polite"></div>
+    <div id="regiaoStatus" role="status" aria-live="polite" class="sr-only"></div>
 
     <section aria-labelledby="quadroTarefas">
       <h2 id="quadroTarefas">Quadro de Tarefas</h2>
