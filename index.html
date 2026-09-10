@@ -45,8 +45,17 @@
           <label><input type="radio" name="filtroPrioridade" value="alta" /> Alta</label>
         </fieldset>
 
+        <div>
+          <label for="ordenacaoPrazo">Ordenar por Prazo</label>
+          <select id="ordenacaoPrazo">
+            <option value="padrao">Padrão (Sem ordenação)</option>
+            <option value="prazoAsc">Prazo mais próximo</option>
+            <option value="prazoDesc">Prazo mais distante</option>
+          </select>
+        </div>
+
         <div class="acoes-filtros">
-          <button type="button" id="btnAplicarFiltros">Aplicar Filtros</button>
+          <button type="button" id="btnLimparFiltros">Limpar filtros</button>
         </div>
       </form>
     </section>
@@ -55,6 +64,9 @@
 
     <section aria-labelledby="quadroTarefas">
       <h2 id="quadroTarefas">Quadro de Tarefas</h2>
+      
+      <div id="contadorTarefas" class="contador-tarefas"></div>
+
       <div id="containerEstado"></div>
 
       <div class="kanban-grid">

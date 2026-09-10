@@ -1,8 +1,11 @@
 import { renderizarTarefas } from './renderizacao.js';
 
-export function renderizarEstado(estado, dados) {
+export function renderizarEstado(estado, dados, estadoGlobal) {
   const containerEstado = document.getElementById('containerEstado');
   const regiaoStatus = document.getElementById('regiaoStatus');
+  const contadorTarefas = document.getElementById('contadorTarefas');
+
+  const totalOriginal = estadoGlobal ? estadoGlobal.tarefas.length : 0;
 
   if (estado === 'carregando') {
     renderizarTarefas([]);
@@ -13,6 +16,9 @@ export function renderizarEstado(estado, dados) {
     if (regiaoStatus) {
       regiaoStatus.textContent = 'Carregando tarefas, por favor aguarde.';
     }
+    if (contadorTarefas) {
+      contadorTarefas.textContent = '';
+    }
   } else if (estado === 'sucesso') {
     if (containerEstado) {
       containerEstado.textContent = '';
@@ -20,10 +26,15 @@ export function renderizarEstado(estado, dados) {
     }
     const lista = Array.isArray(dados) ? dados : [];
     renderizarTarefas(lista);
+
+    const mensagemContador = `${lista.length} de ${totalOriginal} tarefas exibidas`;
     if (regiaoStatus) {
-      regiaoStatus.textContent = `${lista.length} tarefa(s) carregada(s) com sucesso.`;
+      regiaoStatus.textContent = mensagemContador;
     }
-  } else if (estado === 'vazio') {
+    if (contadorTarefas) {
+      contadorTarefas.textContent = mensagemContador;
+    }
+  } else if (estado === 'origemVazia') {
     renderizarTarefas([]);
     const mensagemVazio = typeof dados === 'string' && dados ? dados : 'Nenhuma tarefa cadastrada.';
     if (containerEstado) {
@@ -32,6 +43,22 @@ export function renderizarEstado(estado, dados) {
     }
     if (regiaoStatus) {
       regiaoStatus.textContent = mensagemVazio;
+    }
+    if (contadorTarefas) {
+      contadorTarefas.textContent = '0 tarefas disponíveis';
+    }
+  } else if (estado === 'resultadoVazio') {
+    renderizarTarefas([]);
+    const mensagemSemResultado = typeof dados === 'string' && dados ? dados : 'Nenhum resultado encontrado para os filtros aplicados.';
+    if (containerEstado) {
+      containerEstado.textContent = mensagemSemResultado;
+      containerEstado.className = 'estado-feedback';
+    }
+    if (regiaoStatus) {
+      regiaoStatus.textContent = mensagemSemResultado;
+    }
+    if (contadorTarefas) {
+      contadorTarefas.textContent = `0 de ${totalOriginal} tarefas exibidas`;
     }
   } else if (estado === 'erro') {
     renderizarTarefas([]);
@@ -42,6 +69,9 @@ export function renderizarEstado(estado, dados) {
     }
     if (regiaoStatus) {
       regiaoStatus.textContent = mensagemErro;
+    }
+    if (contadorTarefas) {
+      contadorTarefas.textContent = '';
     }
   }
 }

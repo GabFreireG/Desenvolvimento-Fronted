@@ -125,7 +125,7 @@ label {
   width: 100%;
 }
 
-input[type="search"] {
+input[type="search"], select {
   background-color: var(--bg-input);
   border: 0.0625rem solid var(--cor-borda);
   color: var(--texto-principal);
@@ -198,12 +198,12 @@ button.eletrico-ativo {
   margin-top: 0.5rem;
 }
 
-#btnAplicarFiltros {
+#btnLimparFiltros {
   width: 100%;
 }
 
 @media (min-width: 48rem) {
-  #btnAplicarFiltros {
+  #btnLimparFiltros {
     width: auto;
   }
 }
@@ -251,6 +251,13 @@ section[aria-labelledby="quadroTarefas"] {
 section[aria-labelledby="quadroTarefas"] > h2 {
   margin-top: var(--espaco-xl);
   margin-bottom: var(--espaco-sm);
+}
+
+.contador-tarefas {
+  font-size: 0.9375rem;
+  color: var(--texto-secundario);
+  margin-bottom: var(--espaco-md);
+  font-weight: 500;
 }
 
 .kanban-grid {
