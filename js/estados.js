@@ -1,6 +1,6 @@
 import { renderizarTarefas } from './renderizacao.js';
 
-export function renderizarEstado(estado, dados, estadoGlobal) {
+export function renderizarEstado(estado, dados, estadoGlobal, aoExcluir) {
   const containerEstado = document.getElementById('containerEstado');
   const regiaoStatus = document.getElementById('regiaoStatus');
   const contadorTarefas = document.getElementById('contadorTarefas');
@@ -8,70 +8,37 @@ export function renderizarEstado(estado, dados, estadoGlobal) {
   const totalOriginal = estadoGlobal ? estadoGlobal.tarefas.length : 0;
 
   if (estado === 'carregando') {
-    renderizarTarefas([]);
+    renderizarTarefas([], aoExcluir);
     if (containerEstado) {
-      containerEstado.textContent = 'Carregando tarefas...';
+      containerEstado.textContent = 'Carregando agenda...';
       containerEstado.className = 'estado-feedback';
     }
-    if (regiaoStatus) {
-      regiaoStatus.textContent = 'Carregando tarefas, por favor aguarde.';
-    }
-    if (contadorTarefas) {
-      contadorTarefas.textContent = '';
-    }
+    if (contadorTarefas) contadorTarefas.textContent = '';
   } else if (estado === 'sucesso') {
     if (containerEstado) {
       containerEstado.textContent = '';
       containerEstado.className = '';
     }
     const lista = Array.isArray(dados) ? dados : [];
-    renderizarTarefas(lista);
+    renderizarTarefas(lista, aoExcluir);
 
     const mensagemContador = `${lista.length} de ${totalOriginal} tarefas exibidas`;
-    if (regiaoStatus) {
-      regiaoStatus.textContent = mensagemContador;
-    }
-    if (contadorTarefas) {
-      contadorTarefas.textContent = mensagemContador;
-    }
-  } else if (estado === 'origemVazia') {
-    renderizarTarefas([]);
-    const mensagemVazio = typeof dados === 'string' && dados ? dados : 'Nenhuma tarefa cadastrada.';
-    if (containerEstado) {
-      containerEstado.textContent = mensagemVazio;
-      containerEstado.className = 'estado-feedback';
-    }
-    if (regiaoStatus) {
-      regiaoStatus.textContent = mensagemVazio;
-    }
-    if (contadorTarefas) {
-      contadorTarefas.textContent = '0 tarefas disponíveis';
-    }
+    if (contadorTarefas) contadorTarefas.textContent = mensagemContador;
+    if (regiaoStatus) regiaoStatus.textContent = mensagemContador;
   } else if (estado === 'resultadoVazio') {
-    renderizarTarefas([]);
-    const mensagemSemResultado = typeof dados === 'string' && dados ? dados : 'Nenhum resultado encontrado para os filtros aplicados.';
+    renderizarTarefas([], aoExcluir);
+    const msg = typeof dados === 'string' ? dados : 'Nenhuma tarefa encontrada para a seleção.';
     if (containerEstado) {
-      containerEstado.textContent = mensagemSemResultado;
+      containerEstado.textContent = msg;
       containerEstado.className = 'estado-feedback';
     }
-    if (regiaoStatus) {
-      regiaoStatus.textContent = mensagemSemResultado;
-    }
-    if (contadorTarefas) {
-      contadorTarefas.textContent = `0 de ${totalOriginal} tarefas exibidas`;
-    }
+    if (contadorTarefas) contadorTarefas.textContent = `0 de ${totalOriginal} tarefas exibidas`;
   } else if (estado === 'erro') {
-    renderizarTarefas([]);
-    const mensagemErro = typeof dados === 'string' && dados ? dados : 'Ocorreu um erro ao carregar as tarefas.';
+    renderizarTarefas([], aoExcluir);
+    const msg = typeof dados === 'string' ? dados : 'Erro ao carregar a agenda.';
     if (containerEstado) {
-      containerEstado.textContent = mensagemErro;
+      containerEstado.textContent = msg;
       containerEstado.className = 'estado-feedback erro';
-    }
-    if (regiaoStatus) {
-      regiaoStatus.textContent = mensagemErro;
-    }
-    if (contadorTarefas) {
-      contadorTarefas.textContent = '';
     }
   }
 }

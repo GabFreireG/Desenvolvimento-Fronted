@@ -103,12 +103,6 @@ export function dispararEfeitoEletrico(botao) {
       ctx.shadowColor = '#ffffff';
       ctx.shadowBlur = 5;
       desenharRaio(ctx, p.x1, p.y1, p.x2, p.y2, 4, 5);
-
-      ctx.strokeStyle = '#e4e4e7';
-      ctx.lineWidth = 1;
-      ctx.shadowColor = '#d4d4d8';
-      ctx.shadowBlur = 3;
-      desenharRaio(ctx, p.x1, p.y1, p.x2, p.y2, 4, 5);
     }
 
     frames++;

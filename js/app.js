@@ -1,19 +1,52 @@
 import { carregarTarefas } from './api.js';
 import { renderizarEstado } from './estados.js';
 import { inicializarEfeitoEletrico } from './eletricidade.js';
+import { renderizarGridMeses, renderizarDiasDoMes } from './calendario.js';
 
-// Estado único da aplicação
 const estado = {
   tarefas: [],
   busca: '',
-  status: 'todos',
+  mes: '08',
+  mesSelecionado: 7,
+  diaSelecionado: null,
   prioridade: 'todas',
   ordenacao: 'padrao',
+  agruparPrioridade: 'nenhum',
+  ordenarPorDia: 'asc',
+  modoMeses: 'detalhado',
   carregamento: true,
-  erro: null
+  erro: null,
+  ano: 2026
 };
 
-// Função de derivação pura: obtém a lista filtrada/ordenada sem alterar estado.tarefas
+function inicializarRelogio() {
+  const relogioEl = document.getElementById('relogioDigital');
+  if (!relogioEl) return;
+
+  function atualizarHora() {
+    const agora = new Date();
+    const hh = String(agora.getHours()).padStart(2, '0');
+    const mm = String(agora.getMinutes()).padStart(2, '0');
+    const ss = String(agora.getSeconds()).padStart(2, '0');
+    const dia = String(agora.getDate()).padStart(2, '0');
+    const mes = String(agora.getMonth() + 1).padStart(2, '0');
+    const ano = agora.getFullYear();
+
+    relogioEl.innerHTML = `
+      <div class="relogio-hora">${hh}:${mm}:${ss}</div>
+      <div class="relogio-data">${dia}/${mes}/${ano}</div>
+    `;
+  }
+
+  atualizarHora();
+  setInterval(atualizarHora, 1000);
+}
+
+function excluirTarefa(id) {
+  estado.tarefas = estado.tarefas.filter(t => t.id !== id);
+  atualizarInterface();
+}
+
 function derivarTarefasVisiveis(estadoAtual) {
   let resultado = [...estadoAtual.tarefas];
 
@@ -22,50 +55,122 @@ function derivarTarefasVisiveis(estadoAtual) {
     resultado = resultado.filter(t => t.titulo.toLowerCase().includes(termo));
   }
 
-  if (estadoAtual.status !== 'todos') {
-    resultado = resultado.filter(t => t.status === estadoAtual.status);
+  if (estadoAtual.mes !== 'todos') {
+    resultado = resultado.filter(t => {
+      if (!t.prazo) return false;
+      const partes = t.prazo.split('-');
+      return partes[1] === estadoAtual.mes;
+    });
+  }
+
+  if (estadoAtual.diaSelecionado) {
+    resultado = resultado.filter(t => t.prazo === estadoAtual.diaSelecionado);
   }
 
   if (estadoAtual.prioridade !== 'todas') {
     resultado = resultado.filter(t => t.prioridade === estadoAtual.prioridade);
   }
 
-  if (estadoAtual.ordenacao === 'prazoAsc') {
-    resultado.sort((a, b) => new Date(a.prazo) - new Date(b.prazo));
-  } else if (estadoAtual.ordenacao === 'prazoDesc') {
-    resultado.sort((a, b) => new Date(b.prazo) - new Date(a.prazo));
-  }
+  // Ordenação por Dia
+  resultado.sort((a, b) => {
+    const diaA = parseInt(a.prazo ? a.prazo.split('-')[2] : 0, 10);
+    const diaB = parseInt(b.prazo ? b.prazo.split('-')[2] : 0, 10);
+    return estadoAtual.ordenarPorDia === 'asc' ? diaA - diaB : diaB - diaA;
+  });
 
   return resultado;
 }
 
-// Ciclo único de atualização e renderização
 function atualizarInterface() {
   if (estado.carregamento) {
-    renderizarEstado('carregando', null, estado);
+    renderizarEstado('carregando', null, estado, excluirTarefa);
     return;
   }
 
   if (estado.erro) {
-    renderizarEstado('erro', estado.erro, estado);
+    renderizarEstado('erro', estado.erro, estado, excluirTarefa);
     return;
   }
 
-  if (estado.tarefas.length === 0) {
-    renderizarEstado('origemVazia', 'Nenhuma tarefa encontrada no arquivo de dados.', estado);
-    return;
-  }
+  renderizarGridMeses(
+    estado,
+    (mesIndex) => {
+      estado.mesSelecionado = mesIndex;
+      estado.mes = String(mesIndex + 1).padStart(2, '0');
+      estado.diaSelecionado = null;
+
+      const selectMes = document.getElementById('filtroMes');
+      if (selectMes) selectMes.value = estado.mes;
+
+      atualizarInterface();
+    },
+    (novoModo) => {
+      estado.modoMeses = novoModo;
+      atualizarInterface();
+    }
+  );
+
+  renderizarDiasDoMes(
+    estado,
+    (diaFormatado) => {
+      estado.diaSelecionado = estado.diaSelecionado === diaFormatado ? null : diaFormatado;
+      atualizarInterface();
+    },
+    () => {
+      estado.diaSelecionado = null;
+      atualizarInterface();
+    }
+  );
 
   const tarefasVisiveis = derivarTarefasVisiveis(estado);
 
   if (tarefasVisiveis.length === 0) {
-    renderizarEstado('resultadoVazio', 'Nenhuma tarefa corresponde aos critérios selecionados.', estado);
+    renderizarEstado('resultadoVazio', 'Nenhuma tarefa encontrada para a seleção.', estado, excluirTarefa);
   } else {
-    renderizarEstado('sucesso', tarefasVisiveis, estado);
+    renderizarEstado('sucesso', tarefasVisiveis, estado, excluirTarefa);
+  }
+}
+
+function configurarModal() {
+  const modal = document.getElementById('modalNovaTarefa');
+  const btnAbrir = document.getElementById('btnAbrirModalCriar');
+  const btnFechar = document.getElementById('btnFecharModal');
+  const btnCancelar = document.getElementById('btnCancelarModal');
+  const formModal = document.getElementById('formNovaTarefa');
+
+  if (!modal) return;
+
+  const abrirModal = () => modal.showModal();
+  const fecharModal = () => modal.close();
+
+  if (btnAbrir) btnAbrir.addEventListener('click', abrirModal);
+  if (btnFechar) btnFechar.addEventListener('click', fecharModal);
+  if (btnCancelar) btnCancelar.addEventListener('click', fecharModal);
+
+  if (formModal) {
+    formModal.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const novaTarefa = {
+        id: Date.now(),
+        titulo: document.getElementById('novaTitulo').value,
+        projeto: document.getElementById('novoProjeto').value,
+        responsavel: document.getElementById('novoResponsavel').value,
+        prazo: document.getElementById('novoPrazo').value,
+        prioridade: document.getElementById('novaPrioridade').value,
+        status: document.getElementById('novoStatus').value
+      };
+
+      estado.tarefas.unshift(novaTarefa);
+      formModal.reset();
+      fecharModal();
+      atualizarInterface();
+    });
   }
 }
 
 async function inicializar() {
+  inicializarRelogio();
+  configurarModal();
   estado.carregamento = true;
   estado.erro = null;
   atualizarInterface();
@@ -76,15 +181,7 @@ async function inicializar() {
     estado.carregamento = false;
   } catch (erro) {
     estado.carregamento = false;
-    if (erro.name === 'TypeError') {
-      estado.erro = 'Erro de rede: Não foi possível conectar ao servidor. Verifique se você está online.';
-    } else if (erro.name === 'SyntaxError') {
-      estado.erro = 'Erro de formato: O arquivo JSON contém erros de sintaxe ou estrutura inválida.';
-    } else if (erro.name === 'HttpError' || erro.status) {
-      estado.erro = `Erro de protocolo: Falha na requisição HTTP (Status ${erro.status || 'desconhecido'}).`;
-    } else {
-      estado.erro = 'Falha ao carregar as tarefas.';
-    }
+    estado.erro = 'Falha ao carregar as tarefas.';
   }
 
   atualizarInterface();
@@ -93,57 +190,76 @@ async function inicializar() {
 document.addEventListener('DOMContentLoaded', () => {
   inicializarEfeitoEletrico();
 
-  const formFiltros = document.getElementById('formFiltros');
   const campoBusca = document.getElementById('buscaTitulo');
-  const selectOrdenacao = document.getElementById('ordenacaoPrazo');
-  const btnLimparFiltros = document.getElementById('btnLimparFiltros');
-
-  if (formFiltros) {
-    formFiltros.addEventListener('submit', (event) => {
-      event.preventDefault();
-      atualizarInterface();
-    });
-
-    formFiltros.addEventListener('change', (event) => {
-      if (event.target.name === 'filtroStatus') {
-        estado.status = event.target.value;
-        atualizarInterface();
-      } else if (event.target.name === 'filtroPrioridade') {
-        estado.prioridade = event.target.value;
-        atualizarInterface();
-      }
-    });
-  }
+  const seletorMes = document.getElementById('filtroMes');
+  const seletorPrioridade = document.getElementById('filtroPrioridade');
+  const seletorOrdenacao = document.getElementById('ordenacaoPrazo');
+  const selectAgrupar = document.getElementById('agruparPrioridade');
+  const selectOrdenarDia = document.getElementById('ordenarPorDia');
+  const btnLimpar = document.getElementById('btnLimparFiltros');
 
   if (campoBusca) {
-    campoBusca.addEventListener('input', (event) => {
-      estado.busca = event.target.value;
+    campoBusca.addEventListener('input', (e) => {
+      estado.busca = e.target.value;
       atualizarInterface();
     });
   }
 
-  if (selectOrdenacao) {
-    selectOrdenacao.addEventListener('change', (event) => {
-      estado.ordenacao = event.target.value;
+  if (seletorMes) {
+    seletorMes.value = estado.mes;
+    seletorMes.addEventListener('change', (e) => {
+      estado.mes = e.target.value;
+      estado.mesSelecionado = e.target.value === 'todos' ? null : parseInt(e.target.value, 10) - 1;
+      estado.diaSelecionado = null;
       atualizarInterface();
     });
   }
 
-  if (btnLimparFiltros) {
-    btnLimparFiltros.addEventListener('click', () => {
+  if (seletorPrioridade) {
+    seletorPrioridade.addEventListener('change', (e) => {
+      estado.prioridade = e.target.value;
+      atualizarInterface();
+    });
+  }
+
+  if (seletorOrdenacao) {
+    seletorOrdenacao.addEventListener('change', (e) => {
+      estado.ordenacao = e.target.value;
+      atualizarInterface();
+    });
+  }
+
+  if (selectAgrupar) {
+    selectAgrupar.addEventListener('change', (e) => {
+      estado.agruparPrioridade = e.target.value;
+      atualizarInterface();
+    });
+  }
+
+  if (selectOrdenarDia) {
+    selectOrdenarDia.addEventListener('change', (e) => {
+      estado.ordenarPorDia = e.target.value;
+      atualizarInterface();
+    });
+  }
+
+  if (btnLimpar) {
+    btnLimpar.addEventListener('click', () => {
       estado.busca = '';
-      estado.status = 'todos';
+      estado.mes = '08';
+      estado.mesSelecionado = 7;
+      estado.diaSelecionado = null;
       estado.prioridade = 'todas';
       estado.ordenacao = 'padrao';
+      estado.agruparPrioridade = 'nenhum';
+      estado.ordenarPorDia = 'asc';
 
       if (campoBusca) campoBusca.value = '';
-      if (selectOrdenacao) selectOrdenacao.value = 'padrao';
-
-      const radioStatusTodos = document.querySelector('input[name="filtroStatus"][value="todos"]');
-      if (radioStatusTodos) radioStatusTodos.checked = true;
-
-      const radioPrioridadeTodas = document.querySelector('input[name="filtroPrioridade"][value="todas"]');
-      if (radioPrioridadeTodas) radioPrioridadeTodas.checked = true;
+      if (seletorMes) seletorMes.value = '08';
+      if (seletorPrioridade) seletorPrioridade.value = 'todas';
+      if (seletorOrdenacao) seletorOrdenacao.value = 'padrao';
+      if (selectAgrupar) selectAgrupar.value = 'nenhum';
+      if (selectOrdenarDia) selectOrdenarDia.value = 'asc';
 
       atualizarInterface();
     });
