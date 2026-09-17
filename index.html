@@ -3,98 +3,198 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tarefas Acadêmicas</title>
+  <title>Agenda Acadêmica</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header>
-    <h1>
-      <svg class="icone-raio-4pontas" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M13 2L3 14h7v8l10-12h-7z" />
-      </svg>
-      Tarefas Acadêmicas
-    </h1>
+  <header class="header-principal">
+    <div class="logo-titulo">
+      <h1>
+        <svg class="icone-raio-4pontas" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M13 2L3 14h7v8l10-12h-7z" />
+        </svg>
+        Agenda Acadêmica
+      </h1>
+    </div>
+
+    <div class="header-direita">
+      <div id="relogioDigital" class="relogio-mesa" title="Horário e Data Atual"></div>
+    </div>
   </header>
 
   <main>
-    <section aria-labelledby="buscaFiltros">
-      <h2 id="buscaFiltros">Buscar e Filtrar</h2>
-      <form id="formFiltros">
-        <div>
-          <label for="buscaTitulo">Buscar por título</label>
-          <div class="campo-busca">
-            <input type="search" id="buscaTitulo" placeholder="Digite o título da tarefa..." />
-            <button type="submit" id="btnBuscar">Buscar</button>
-          </div>
+    <!-- Filtros Compactos -->
+    <section aria-labelledby="buscaFiltros" class="secao-filtros-compacta">
+      <h2 id="buscaFiltros" class="sr-only">Buscar e Filtrar Agenda</h2>
+      <form id="formFiltros" class="form-filtros-inline">
+        <div class="campo-busca-compacto">
+          <input type="search" id="buscaTitulo" placeholder="🔍 Buscar por título da tarefa..." />
         </div>
 
-        <fieldset>
-          <legend>Filtrar por Status</legend>
-          <label><input type="radio" name="filtroStatus" value="todos" checked /> Todos</label>
-          <label><input type="radio" name="filtroStatus" value="aFazer" /> A Fazer</label>
-          <label><input type="radio" name="filtroStatus" value="emAndamento" /> Em Andamento</label>
-          <label><input type="radio" name="filtroStatus" value="emRevisao" /> Em Revisão</label>
-          <label><input type="radio" name="filtroStatus" value="concluida" /> Concluída</label>
-        </fieldset>
-
-        <fieldset>
-          <legend>Filtrar por Prioridade</legend>
-          <label><input type="radio" name="filtroPrioridade" value="todas" checked /> Todas</label>
-          <label><input type="radio" name="filtroPrioridade" value="baixa" /> Baixa</label>
-          <label><input type="radio" name="filtroPrioridade" value="media" /> Média</label>
-          <label><input type="radio" name="filtroPrioridade" value="alta" /> Alta</label>
-        </fieldset>
-
-        <div>
-          <label for="ordenacaoPrazo">Ordenar por Prazo</label>
-          <select id="ordenacaoPrazo">
-            <option value="padrao">Padrão (Sem ordenação)</option>
-            <option value="prazoAsc">Prazo mais próximo</option>
-            <option value="prazoDesc">Prazo mais distante</option>
+        <div class="campo-seletor-compacto">
+          <label for="filtroMes">Mês:</label>
+          <select id="filtroMes">
+            <option value="todos">Todos os meses</option>
+            <option value="01">Janeiro</option>
+            <option value="02">Fevereiro</option>
+            <option value="03">Março</option>
+            <option value="04">Abril</option>
+            <option value="05">Maio</option>
+            <option value="06">Junho</option>
+            <option value="07">Julho</option>
+            <option value="08">Agosto</option>
+            <option value="09">Setembro</option>
+            <option value="10">Outubro</option>
+            <option value="11">Novembro</option>
+            <option value="12">Dezembro</option>
           </select>
         </div>
 
-        <div class="acoes-filtros">
-          <button type="button" id="btnLimparFiltros">Limpar filtros</button>
+        <div class="campo-seletor-compacto">
+          <label for="filtroPrioridade">Prioridade:</label>
+          <select id="filtroPrioridade">
+            <option value="todas">Todas</option>
+            <option value="baixa">Baixa</option>
+            <option value="media">Média</option>
+            <option value="alta">Alta</option>
+          </select>
+        </div>
+
+        <div class="campo-seletor-compacto">
+          <label for="ordenacaoPrazo">Ordem Geral:</label>
+          <select id="ordenacaoPrazo">
+            <option value="padrao">Padrão</option>
+            <option value="prazoAsc">Mais próximo</option>
+            <option value="prazoDesc">Mais distante</option>
+          </select>
+        </div>
+
+        <div class="acoes-filtros-compacto">
+          <button type="button" id="btnLimparFiltros" class="btn-secundario">Limpar</button>
         </div>
       </form>
     </section>
 
     <div id="regiaoStatus" role="status" aria-live="polite" class="sr-only"></div>
+    <div id="containerEstado"></div>
 
-    <section aria-labelledby="quadroTarefas">
-      <h2 id="quadroTarefas">Quadro de Tarefas</h2>
-      
-      <div id="contadorTarefas" class="contador-tarefas"></div>
-
-      <div id="containerEstado"></div>
-
-      <div class="kanban-grid">
-        <section aria-labelledby="aFazer">
-          <h3 id="aFazer">A Fazer</h3>
-          <ul id="listaAFazer"></ul>
-        </section>
-
-        <section aria-labelledby="emAndamento">
-          <h3 id="emAndamento">Em Andamento</h3>
-          <ul id="listaEmAndamento"></ul>
-        </section>
-
-        <section aria-labelledby="emRevisao">
-          <h3 id="emRevisao">Em Revisão</h3>
-          <ul id="listaEmRevisao"></ul>
-        </section>
-
-        <section aria-labelledby="tarefasConcluidas">
-          <h3 id="tarefasConcluidas">Concluídas</h3>
-          <ul id="listaConcluidas"></ul>
-        </section>
+    <!-- Seção de Meses -->
+    <section aria-labelledby="tituloCalendario" class="secao-calendario">
+      <div class="cabecalho-secao">
+        <h2 id="tituloCalendario">Calendário Anual</h2>
       </div>
+
+      <div id="gridMeses" class="grid-meses-container"></div>
+    </section>
+
+    <!-- Detalhamento dos Dias do Mês -->
+    <section id="secaoMesDetalhado" class="secao-mes-detalhado" aria-labelledby="tituloMesAtual">
+      <div class="barra-acoes-datas">
+        <button type="button" id="btnAbrirModalCriar" class="btn-destaque">+ Nova Tarefa</button>
+        <button type="button" id="btnVerTodasMes" class="btn-link">Ver todas do mês</button>
+      </div>
+
+      <div class="cabecalho-mes">
+        <h3 id="tituloMesAtual">Dias do Mês</h3>
+      </div>
+
+      <div class="conteiner-detalhe-mes">
+        <div id="gridDiasMes" class="grid-dias-mes"></div>
+        <aside id="painelEstatisticasMes" class="painel-estatisticas"></aside>
+      </div>
+    </section>
+
+    <!-- Lista de Cards com Controles de Organização -->
+    <section aria-labelledby="quadroTarefas" class="secao-tarefas">
+      <div class="cabecalho-tarefas">
+        <h2 id="quadroTarefas">Lista de Tarefas</h2>
+        
+        <div class="controles-organizacao-tarefas">
+          <div class="campo-seletor-compacto">
+            <label for="agruparPrioridade">Agrupar:</label>
+            <select id="agruparPrioridade">
+              <option value="nenhum">Sem agrupamento</option>
+              <option value="importancia">Por Importância</option>
+            </select>
+          </div>
+
+          <div class="campo-seletor-compacto">
+            <label for="ordenarPorDia">Ordenar por Dia:</label>
+            <select id="ordenarPorDia">
+              <option value="asc">Dia 1 ➔ 31 (Crescente)</option>
+              <option value="desc">Dia 31 ➔ 1 (Decrescente)</option>
+            </select>
+          </div>
+        </div>
+
+        <div id="contadorTarefas" class="contador-tarefas"></div>
+      </div>
+
+      <div id="containerCardsTarefas" class="cards-container-wrapper"></div>
     </section>
   </main>
 
+  <!-- Modal Nova Tarefa -->
+  <dialog id="modalNovaTarefa" class="modal-tarefa">
+    <div class="modal-conteudo">
+      <div class="modal-header">
+        <h3>➕ Nova Tarefa na Agenda</h3>
+        <button type="button" id="btnFecharModal" class="btn-fechar" aria-label="Fechar">&times;</button>
+      </div>
+      <form id="formNovaTarefa" class="form-modal">
+        <div class="campo-modal">
+          <label for="novaTitulo">Título da Tarefa *</label>
+          <input type="text" id="novaTitulo" required placeholder="Ex: Entregar relatório de Redes">
+        </div>
+
+        <div class="campo-modal-duplo">
+          <div class="campo-modal">
+            <label for="novoProjeto">Projeto / Disciplina *</label>
+            <input type="text" id="novoProjeto" required placeholder="Ex: Simulador de Redes">
+          </div>
+          <div class="campo-modal">
+            <label for="novoResponsavel">Responsável *</label>
+            <input type="text" id="novoResponsavel" required placeholder="Ex: Lucas">
+          </div>
+        </div>
+
+        <div class="campo-modal-triplo">
+          <div class="campo-modal">
+            <label for="novoPrazo">Data de Entrega *</label>
+            <input type="date" id="novoPrazo" required value="2026-08-15">
+          </div>
+          <div class="campo-modal">
+            <label for="novaPrioridade">Prioridade</label>
+            <select id="novaPrioridade">
+              <option value="baixa">Baixa</option>
+              <option value="media" selected>Média</option>
+              <option value="alta">Alta</option>
+            </select>
+          </div>
+          <div class="campo-modal">
+            <label for="novoStatus">Status</label>
+            <select id="novoStatus">
+              <option value="aFazer" selected>A Fazer</option>
+              <option value="emAndamento">Em Andamento</option>
+              <option value="emRevisao">Em Revisão</option>
+              <option value="concluida">Concluída</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="modal-acoes">
+          <button type="button" id="btnCancelarModal" class="btn-secundario">Cancelar</button>
+          <button type="submit" class="btn-destaque">Salvar na Agenda</button>
+        </div>
+      </form>
+    </div>
+  </dialog>
+
   <footer>
-    <p>&copy; Tarefas Acadêmicas - Organização e Produtividade</p>
+    <p>&copy; Agenda Acadêmica - Organização e Produtividade</p>
   </footer>
 
   <script type="module" src="js/app.js"></script>

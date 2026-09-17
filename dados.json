@@ -2,6 +2,78 @@
   "tarefas": [
     {
       "id": 1,
+      "titulo": "Renovar Matrícula Acadêmica",
+      "projeto": "Educação",
+      "responsavel": "Lucas",
+      "prazo": "2026-01-15",
+      "prioridade": "alta",
+      "status": "concluida"
+    },
+    {
+      "id": 2,
+      "titulo": "Aniversário da Mãe (Comprar presente)",
+      "projeto": "Aniversários",
+      "responsavel": "Lucas",
+      "prazo": "2026-02-10",
+      "prioridade": "alta",
+      "status": "concluida"
+    },
+    {
+      "id": 3,
+      "titulo": "Início das Aulas do Semestre",
+      "projeto": "Educação",
+      "responsavel": "Lucas",
+      "prazo": "2026-02-23",
+      "prioridade": "media",
+      "status": "concluida"
+    },
+    {
+      "id": 4,
+      "titulo": "Consulta Odontológica de Rotina",
+      "projeto": "Lembretes Cotidianos",
+      "responsavel": "Lucas",
+      "prazo": "2026-03-05",
+      "prioridade": "baixa",
+      "status": "concluida"
+    },
+    {
+      "id": 5,
+      "titulo": "Entrega do Relatório de Estágio",
+      "projeto": "Educação",
+      "responsavel": "Lucas",
+      "prazo": "2026-04-18",
+      "prioridade": "alta",
+      "status": "concluida"
+    },
+    {
+      "id": 6,
+      "titulo": "Participar do Workshop de Devops",
+      "projeto": "Eventos",
+      "responsavel": "Lucas",
+      "prazo": "2026-05-12",
+      "prioridade": "media",
+      "status": "concluida"
+    },
+    {
+      "id": 7,
+      "titulo": "Pagamento do IPVA e Licenciamento",
+      "projeto": "Lembretes Cotidianos",
+      "responsavel": "Lucas",
+      "prazo": "2026-06-30",
+      "prioridade": "alta",
+      "status": "concluida"
+    },
+    {
+      "id": 8,
+      "titulo": "Aniversário do Pedro (Churrasco)",
+      "projeto": "Aniversários",
+      "responsavel": "Pedro",
+      "prazo": "2026-07-08",
+      "prioridade": "media",
+      "status": "concluida"
+    },
+    {
+      "id": 9,
       "titulo": "Modelar diagrama ER",
       "projeto": "Sistema de Biblioteca",
       "responsavel": "João",
@@ -10,17 +82,17 @@
       "status": "aFazer"
     },
     {
-      "id": 2,
+      "id": 10,
       "titulo": "Configurar ambiente Docker",
-      "projeto": "App de Monitoramento Climático",
+      "projeto": "App de Monitoramento",
       "responsavel": "Maria",
       "prazo": "2026-08-20",
       "prioridade": "media",
       "status": "aFazer"
     },
     {
-      "id": 3,
-      "titulo": "Implementar autenticação de usuários",
+      "id": 11,
+      "titulo": "Implementar autenticação",
       "projeto": "Sistema de Biblioteca",
       "responsavel": "Pedro",
       "prazo": "2026-08-12",
@@ -28,16 +100,7 @@
       "status": "emAndamento"
     },
     {
-      "id": 4,
-      "titulo": "Criar API de consulta climática",
-      "projeto": "App de Monitoramento Climático",
-      "responsavel": "Ana",
-      "prazo": "2026-08-18",
-      "prioridade": "media",
-      "status": "emAndamento"
-    },
-    {
-      "id": 5,
+      "id": 12,
       "titulo": "Revisar consultas SQL otimizadas",
       "projeto": "Sistema de Biblioteca",
       "responsavel": "Carla",
@@ -46,31 +109,67 @@
       "status": "emRevisao"
     },
     {
-      "id": 6,
-      "titulo": "Testar simulação de topologia em estrela",
-      "projeto": "Simulador de Redes Neurais Avançado",
+      "id": 13,
+      "titulo": "Hackathon Acadêmico de IA",
+      "projeto": "Eventos",
       "responsavel": "Lucas",
-      "prazo": "2026-08-14",
-      "prioridade": "alta",
-      "status": "emRevisao"
-    },
-    {
-      "id": 7,
-      "titulo": "Escrever documentação do módulo de empréstimos",
-      "projeto": "Sistema de Biblioteca",
-      "responsavel": "João",
-      "prazo": "2026-08-05",
-      "prioridade": "baixa",
-      "status": "concluida"
-    },
-    {
-      "id": 8,
-      "titulo": "Configurar repositório Git do simulador",
-      "projeto": "Simulador de Redes Neurais Avançado",
-      "responsavel": "Maria",
-      "prazo": "2026-08-02",
+      "prazo": "2026-09-04",
       "prioridade": "media",
-      "status": "concluida"
+      "status": "aFazer"
+    },
+    {
+      "id": 14,
+      "titulo": "Apresentação de TCC - Etapa 1",
+      "projeto": "Educação",
+      "responsavel": "Lucas",
+      "prazo": "2026-09-25",
+      "prioridade": "alta",
+      "status": "emAndamento"
+    },
+    {
+      "id": 15,
+      "titulo": "Revisão Geral do Carro",
+      "projeto": "Lembretes Cotidianos",
+      "responsavel": "Lucas",
+      "prazo": "2026-10-14",
+      "prioridade": "media",
+      "status": "aFazer"
+    },
+    {
+      "id": 16,
+      "titulo": "Aniversário da Carla",
+      "projeto": "Aniversários",
+      "responsavel": "Carla",
+      "prazo": "2026-11-03",
+      "prioridade": "baixa",
+      "status": "aFazer"
+    },
+    {
+      "id": 17,
+      "titulo": "Simpósio de Tecnologia Acadêmica",
+      "projeto": "Eventos",
+      "responsavel": "Maria",
+      "prazo": "2026-11-20",
+      "prioridade": "media",
+      "status": "aFazer"
+    },
+    {
+      "id": 18,
+      "titulo": "Comprar passagens das férias",
+      "projeto": "Lembretes Cotidianos",
+      "responsavel": "Lucas",
+      "prazo": "2026-12-05",
+      "prioridade": "alta",
+      "status": "aFazer"
+    },
+    {
+      "id": 19,
+      "titulo": "Entrega Final da Monografia",
+      "projeto": "Educação",
+      "responsavel": "Lucas",
+      "prazo": "2026-12-18",
+      "prioridade": "alta",
+      "status": "aFazer"
     }
   ]
 }
